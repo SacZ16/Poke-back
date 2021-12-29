@@ -3,18 +3,26 @@ const app = express();
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cors = require("cors");
+
 require("dotenv/config");
 
 app.use(cors());
 app.options("*", cors());
+
+
+// Routes
+const usersSchema = require("./routes/users")
+const pokemonSchema = require("./routes/pokemons")
+
+const api = process.env.API_URL;
+app.use(api + "/users", usersSchema)
+app.use(api + "/pokemons", pokemonSchema)
 
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan("tiny"));
 //app.use(authJwt());
-
-const api = process.env.API_URL;
 
 mongoose
   .connect(process.env.CONNECTION_STRING, {
@@ -28,6 +36,6 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-  app.listen(process.env.PORT, () => {
-    console.log("server is running "+process.env.PORT);
-  });
+app.listen(process.env.PORT, () => {
+  console.log("server is running " + process.env.PORT);
+});
