@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const mongoosePaginate = require('mongoose-paginate-v2');
 const pokemonSchema = mongoose.Schema({
     name: {
         type: String,
@@ -21,11 +22,11 @@ const pokemonSchema = mongoose.Schema({
         require: true
     },
     abilities1: {
-        type: String,
+        type: Object,
         require: true
     },
     abilities2: {
-        type: String,
+        type: Object,
         require: true
     },
     img: {
@@ -37,7 +38,7 @@ const pokemonSchema = mongoose.Schema({
         require: true
     },
     stats: {
-        type: Array,
+        type: Object,
         require: true
     },
     oficial: {
@@ -45,5 +46,13 @@ const pokemonSchema = mongoose.Schema({
         require: true
     }
 })
+// pokemonSchema.virtual('id').get(function () {
+//     return this._id.toHexString();
+// });
 
+// pokemonSchema.set('toJSON', {
+//     virtuals: true,
+// });
+
+pokemonSchema.plugin(mongoosePaginate)
 exports.pokemonSchema = mongoose.model("pokemonSchema", pokemonSchema)
